@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight, Wrench, ShieldCheck, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { HeroSlide } from '../types';
+import { getMediaUrl } from '../services/api';
 
 interface HeroSliderProps {
   slides?: HeroSlide[];
@@ -83,14 +84,14 @@ const HeroSlider: React.FC<HeroSliderProps> = ({ slides }) => {
               loop
               muted
               playsInline
-              poster={slide.image}
+              poster={getMediaUrl(slide.image)}
               className="w-full h-full object-cover opacity-60"
             >
-              <source src={slide.video} type="video/mp4" />
-              <img src={slide.image} alt={slide.title} className="w-full h-full object-cover" />
+              <source src={getMediaUrl(slide.video)} type="video/mp4" />
+              <img src={getMediaUrl(slide.image)} alt={slide.title} className="w-full h-full object-cover" />
             </video>
           ) : (
-            <img src={slide.image} alt={slide.title} className="w-full h-full object-cover opacity-60" />
+            <img src={getMediaUrl(slide.image)} alt={slide.title} className="w-full h-full object-cover opacity-60" />
           )}
 
           {/* Dark Overlay Gradients */}

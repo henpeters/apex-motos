@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { X, ShoppingBag, Trash2, Plus, Minus, ArrowRight, ShieldCheck, Truck } from 'lucide-react';
 import { useCart } from '../context/CartContext';
+import { getMediaUrl } from '../services/api';
 
 const CartDrawer: React.FC = () => {
   const {
@@ -103,7 +104,7 @@ const CartDrawer: React.FC = () => {
                   item.product.discountPrice && item.product.discountPrice > 0
                     ? item.product.discountPrice
                     : item.product.price;
-                const image = item.product.images?.[0] || '/media/schwarzenarzisse-auto-parts-white-365353_1920.jpg';
+                const image = getMediaUrl(item.product.images?.[0] || '/media/schwarzenarzisse-auto-parts-white-365353_1920.jpg');
 
                 return (
                   <div

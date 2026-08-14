@@ -12,6 +12,25 @@ import {
 
 const API_URL = import.meta.env.VITE_API_URL || '/api';
 
+// Derives the backend origin (strips trailing /api) to build media URLs.
+// In dev the Vite proxy handles /media → localhost:5000, so we use ''.
+// In production VITE_API_URL = https://your-api.onrender.com/api, so we strip /api.
+export const MEDIA_BASE =
+  import.meta.env.VITE_API_URL
+    ? import.meta.env.VITE_API_URL.replace(/\/api\/?$/, '')
+    : '';
+
+/**
+ * Resolves a /media/... or /uploads/... path to an absolute URL.
+ * Works in both dev (empty prefix → Vite proxy) and production.
+ */
+export const getMediaUrl = (path: string): string => {
+  if (!path) return '';
+  // Already absolute (http/https) — return as-is
+  if (path.startsWith('http')) return path;
+  return `${MEDIA_BASE}${path}`;
+};
+
 const api = axios.create({
   baseURL: API_URL,
   headers: {

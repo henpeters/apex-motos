@@ -16,7 +16,7 @@ import HeroSlider from '../components/HeroSlider';
 import FitmentBar from '../components/FitmentBar';
 import ProductCard from '../components/ProductCard';
 import BookingModal from '../components/BookingModal';
-import { getProducts, getCategories, getServices, getTestimonials, getHeroSlides } from '../services/api';
+import { getProducts, getCategories, getServices, getTestimonials, getHeroSlides, getMediaUrl } from '../services/api';
 import { Product, Category, Service, Testimonial, HeroSlide } from '../types';
 
 const Home: React.FC = () => {
@@ -102,7 +102,7 @@ const Home: React.FC = () => {
               >
                 <div className="w-full h-32 rounded-xl bg-slate-950/80 overflow-hidden mb-3 p-2 flex items-center justify-center">
                   <img
-                    src={cat.image || '/media/schwarzenarzisse-auto-parts-white-365353_1920.jpg'}
+                    src={getMediaUrl(cat.image || '/media/schwarzenarzisse-auto-parts-white-365353_1920.jpg')}
                     alt={cat.name}
                     className="max-h-full max-w-full object-contain group-hover:scale-110 transition-transform duration-500"
                   />
@@ -212,7 +212,7 @@ const Home: React.FC = () => {
               <div className="space-y-3">
                 <div className="w-full h-40 rounded-xl bg-slate-950 overflow-hidden">
                   <img
-                    src={service.image || '/media/life-of-pix-cylinders-569151_1920.jpg'}
+                    src={getMediaUrl(service.image || '/media/life-of-pix-cylinders-569151_1920.jpg')}
                     alt={service.name}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   />

@@ -13,6 +13,17 @@ import {
 
 const API_URL = import.meta.env.VITE_API_URL || '/api';
 
+export const MEDIA_BASE =
+  import.meta.env.VITE_API_URL
+    ? import.meta.env.VITE_API_URL.replace(/\/api\/?$/, '')
+    : '';
+
+export const getMediaUrl = (path: string): string => {
+  if (!path) return '';
+  if (path.startsWith('http')) return path;
+  return `${MEDIA_BASE}${path}`;
+};
+
 const api = axios.create({
   baseURL: API_URL,
   headers: {

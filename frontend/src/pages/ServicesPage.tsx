@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Wrench, Clock, ShieldCheck, CheckCircle2, ArrowRight } from 'lucide-react';
 import BookingModal from '../components/BookingModal';
-import { getServices } from '../services/api';
+import { getServices, getMediaUrl } from '../services/api';
 import { Service } from '../types';
 
 const ServicesPage: React.FC = () => {
@@ -56,7 +56,7 @@ const ServicesPage: React.FC = () => {
                 <div className="space-y-4">
                   <div className="w-full h-48 rounded-2xl bg-slate-950 overflow-hidden relative">
                     <img
-                      src={serv.image || '/media/life-of-pix-cylinders-569151_1920.jpg'}
+                      src={getMediaUrl(serv.image || '/media/life-of-pix-cylinders-569151_1920.jpg')}
                       alt={serv.name}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     />

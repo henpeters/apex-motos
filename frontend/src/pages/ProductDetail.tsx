@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { ShoppingBag, Star, ShieldCheck, Truck, Plus, Minus, ArrowLeft, CheckCircle2 } from 'lucide-react';
 import ProductCard from '../components/ProductCard';
-import { getProductById } from '../services/api';
+import { getProductById, getMediaUrl } from '../services/api';
 import { Product } from '../types';
 import { useCart } from '../context/CartContext';
 
@@ -75,7 +75,7 @@ const ProductDetail: React.FC = () => {
           <div className="space-y-4">
             <div className="w-full h-[420px] rounded-3xl bg-slate-950/80 border border-white/10 p-6 flex items-center justify-center relative overflow-hidden shadow-2xl">
               <img
-                src={activeImage || '/media/schwarzenarzisse-auto-parts-white-365353_1920.jpg'}
+                src={getMediaUrl(activeImage || '/media/schwarzenarzisse-auto-parts-white-365353_1920.jpg')}
                 alt={product.name}
                 className="max-h-full max-w-full object-contain"
               />
@@ -97,7 +97,7 @@ const ProductDetail: React.FC = () => {
                       activeImage === img ? 'border-brand-red ring-2 ring-brand-red/30' : 'border-white/10 opacity-60 hover:opacity-100'
                     }`}
                   >
-                    <img src={img} alt={`Thumbnail ${idx}`} className="w-full h-full object-contain" />
+                    <img src={getMediaUrl(img)} alt={`Thumbnail ${idx}`} className="w-full h-full object-contain" />
                   </button>
                 ))}
               </div>

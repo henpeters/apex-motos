@@ -2,6 +2,7 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Trash2, Plus, Minus, ArrowRight, ArrowLeft, ShoppingBag, ShieldCheck } from 'lucide-react';
 import { useCart } from '../context/CartContext';
+import { getMediaUrl } from '../services/api';
 
 const CartPage: React.FC = () => {
   const {
@@ -59,7 +60,7 @@ const CartPage: React.FC = () => {
                   item.product.discountPrice && item.product.discountPrice > 0
                     ? item.product.discountPrice
                     : item.product.price;
-                const image = item.product.images?.[0] || '/media/schwarzenarzisse-auto-parts-white-365353_1920.jpg';
+                const image = getMediaUrl(item.product.images?.[0] || '/media/schwarzenarzisse-auto-parts-white-365353_1920.jpg');
 
                 return (
                   <div key={item.product._id} className="glass-panel p-4 sm:p-6 rounded-2xl flex items-center gap-6 border border-white/10">

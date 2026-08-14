@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Plus, Edit2, Trash2, X, Image as ImageIcon, Video, Upload } from 'lucide-react';
-import { getHeroSlides, createHeroSlide, updateHeroSlide, deleteHeroSlide, uploadImage } from '../services/api';
+import { getHeroSlides, createHeroSlide, updateHeroSlide, deleteHeroSlide, uploadImage, getMediaUrl } from '../services/api';
 import { HeroSlide } from '../types';
 
 const AdminHeroSlides: React.FC = () => {
@@ -133,7 +133,7 @@ const AdminHeroSlides: React.FC = () => {
             <div key={s._id} className="admin-card p-5 rounded-2xl border border-white/10 flex flex-col md:flex-row items-center justify-between gap-6">
               <div className="flex items-center gap-4 w-full md:w-auto">
                 <div className="w-24 h-16 rounded-xl bg-slate-950 overflow-hidden relative shrink-0">
-                  <img src={s.image} alt={s.title} className="w-full h-full object-cover" />
+                  <img src={getMediaUrl(s.image)} alt={s.title} className="w-full h-full object-cover" />
                   {s.video && (
                     <div className="absolute inset-0 bg-black/40 flex items-center justify-center text-brand-red">
                       <Video className="w-5 h-5" />

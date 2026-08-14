@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Search, X, ShieldCheck, ArrowRight, Loader2 } from 'lucide-react';
-import { getProducts } from '../services/api';
+import { getProducts, getMediaUrl } from '../services/api';
 import { Product } from '../types';
 
 interface SearchModalProps {
@@ -89,7 +89,7 @@ const SearchModal: React.FC<SearchModalProps> = ({ onClose }) => {
             >
               <div className="w-14 h-14 rounded-lg bg-slate-950 flex items-center justify-center p-2 shrink-0">
                 <img
-                  src={product.images?.[0] || '/media/schwarzenarzisse-auto-parts-white-365353_1920.jpg'}
+                  src={getMediaUrl(product.images?.[0] || '/media/schwarzenarzisse-auto-parts-white-365353_1920.jpg')}
                   alt={product.name}
                   className="max-h-full max-w-full object-contain group-hover:scale-105 transition-transform"
                 />

@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { ShoppingBag, Star, ShieldCheck, Eye } from 'lucide-react';
 import { Product } from '../types';
 import { useCart } from '../context/CartContext';
+import { getMediaUrl } from '../services/api';
 
 interface ProductCardProps {
   product: Product;
@@ -18,8 +19,8 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     : 0;
 
   const mainImage = product.images && product.images.length > 0
-    ? product.images[0]
-    : '/media/schwarzenarzisse-auto-parts-white-365353_1920.jpg';
+    ? getMediaUrl(product.images[0])
+    : getMediaUrl('/media/schwarzenarzisse-auto-parts-white-365353_1920.jpg');
 
   return (
     <div className="glass-panel glass-panel-hover rounded-2xl overflow-hidden flex flex-col group relative border border-white/10">
