@@ -175,3 +175,4 @@ VITE_API_URL=http://localhost:5000/api
 - [x] Seed script populates 15 categories, 30 products with real specifications & vehicle fitment tables, 8 services, 5 testimonials, and 3 hero slides.
 - [x] Responsive layout tested across desktop, tablet, and mobile viewports.
 - [x] Render SPA route rewrites configured via `_redirects` and `render.yaml`.
+"# apex-motos" 
