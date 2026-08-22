@@ -6,24 +6,33 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-// ─── Cloudinary Config ──────────────────────────────────────────────────────
-const useCloudinary =
-  !!(process.env.CLOUDINARY_CLOUD_NAME &&
-     process.env.CLOUDINARY_API_KEY &&
-     process.env.CLOUDINARY_API_SECRET);
+/**
+ * Checks if Cloudinary credentials are set in environment variables.
+ * Supports individual keys OR a single CLOUDINARY_URL string.
+ */
+export const isCloudinaryConfigured = (): boolean => {
+  if (process.env.CLOUDINARY_URL) return true;
+  return !!(
+    process.env.CLOUDINARY_CLOUD_NAME &&
+    process.env.CLOUDINARY_API_KEY &&
+    process.env.CLOUDINARY_API_SECRET
+  );
+};
 
-if (useCloudinary) {
-  cloudinary.config({
-    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-    api_key: process.env.CLOUDINARY_API_KEY,
-    api_secret: process.env.CLOUDINARY_API_SECRET,
-  });
-  console.log('[Upload] Cloudinary storage configured.');
-} else {
-  console.log('[Upload] Cloudinary env vars not set — falling back to local disk storage.');
-}
+// Configure Cloudinary dynamically if present
+const initCloudinary = () => {
+  if (process.env.CLOUDINARY_URL) {
+    cloudinary.config({ cloudinary_url: process.env.CLOUDINARY_URL });
+  } else if (isCloudinaryConfigured()) {
+    cloudinary.config({
+      cloud_name: process.env.CLOUDINARY_CLOUD_NAME?.trim(),
+      api_key: process.env.CLOUDINARY_API_KEY?.trim(),
+      api_secret: process.env.CLOUDINARY_API_SECRET?.trim(),
+    });
+  }
+};
 
-// ─── Local Disk Fallback ─────────────────────────────────────────────────────
+// Local disk fallback directory
 const uploadsDir = path.join(__dirname, '../../uploads');
 if (!fs.existsSync(uploadsDir)) {
   fs.mkdirSync(uploadsDir, { recursive: true });
@@ -40,51 +49,62 @@ const diskStorage = multer.diskStorage({
   },
 });
 
-// ─── File Filter ─────────────────────────────────────────────────────────────
 function checkFileType(file: Express.Multer.File, cb: multer.FileFilterCallback) {
-  const allowed = /jpg|jpeg|png|webp|gif|mp4/;
+  const allowed = /jpg|jpeg|png|webp|gif|mp4|heic/;
   const extOk = allowed.test(path.extname(file.originalname).toLowerCase());
-  const mimeOk = allowed.test(file.mimetype);
-  if (extOk && mimeOk) {
+  const mimeOk = allowed.test(file.mimetype) || file.mimetype.startsWith('image/');
+  if (extOk || mimeOk) {
     return cb(null, true);
   }
-  cb(new Error('Only images (jpg, jpeg, png, webp, gif) and mp4 videos are allowed!'));
+  cb(new Error('Only image files (JPG, PNG, WEBP, GIF, HEIC) are allowed!'));
 }
 
-// ─── Multer Instance (memory when Cloudinary, disk otherwise) ─────────────────
+// Multer configured with memory storage if Cloudinary, disk storage otherwise
 export const upload = multer({
-  storage: useCloudinary ? multer.memoryStorage() : diskStorage,
-  limits: { fileSize: 20 * 1024 * 1024 }, // 20MB max
+  storage: multer.memoryStorage(), // Use memory storage by default to easily upload to Cloudinary
+  limits: { fileSize: 25 * 1024 * 1024 }, // 25MB max
   fileFilter(_req, file, cb) {
     checkFileType(file, cb);
   },
 });
 
-// ─── Upload Handler ───────────────────────────────────────────────────────────
 /**
- * Uploads a file buffer to Cloudinary or saves it to disk.
- * Returns the public URL of the stored file.
+ * Handles file upload to Cloudinary or falls back to local disk saving.
+ * Returns the public HTTPS URL of the uploaded image.
  */
 export const handleFileUpload = async (file: Express.Multer.File): Promise<string> => {
-  if (useCloudinary && file.buffer) {
-    // Upload buffer to Cloudinary
+  initCloudinary();
+
+  if (isCloudinaryConfigured() && file.buffer) {
+    console.log('[Upload] Uploading image buffer to Cloudinary...');
     const result = await new Promise<any>((resolve, reject) => {
       const stream = cloudinary.uploader.upload_stream(
         {
           folder: 'apex-motors',
           resource_type: 'auto',
-          transformation: [{ quality: 'auto', fetch_format: 'auto' }],
         },
         (error, result) => {
-          if (error) reject(error);
-          else resolve(result);
+          if (error) {
+            console.error('[Upload] Cloudinary upload error:', error);
+            reject(error);
+          } else {
+            resolve(result);
+          }
         }
       );
       stream.end(file.buffer);
     });
+
+    console.log('[Upload] Cloudinary upload success. URL:', result.secure_url);
     return result.secure_url;
-  } else {
-    // Local disk — file was already saved by multer diskStorage
-    return `/uploads/${file.filename}`;
   }
+
+  // Fallback: Save memory buffer to local disk
+  console.warn('[Upload] Cloudinary environment variables NOT found. Saving to temporary local disk fallback...');
+  const ext = path.extname(file.originalname) || '.jpg';
+  const filename = `${Date.now()}-${Math.round(Math.random() * 1e9)}${ext}`;
+  const filePath = path.join(uploadsDir, filename);
+
+  fs.writeFileSync(filePath, file.buffer);
+  return `/uploads/${filename}`;
 };
