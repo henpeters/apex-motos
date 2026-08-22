@@ -25,6 +25,8 @@ const AdminProducts: React.FC = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [uploadingImage, setUploadingImage] = useState(false);
+  const [uploadError, setUploadError] = useState('');
+  const [saveError, setSaveError] = useState('');
 
   // Form Fields
   const [name, setName] = useState('');
@@ -113,11 +115,14 @@ const AdminProducts: React.FC = () => {
     const file = e.target.files?.[0];
     if (!file) return;
     setUploadingImage(true);
+    setUploadError('');
     try {
       const data = await uploadImage(file);
       setImages((prev) => [...prev, data.url]);
-    } catch (err) {
-      console.error(err);
+    } catch (err: any) {
+      const msg = err?.response?.data?.message || err?.message || 'Image upload failed';
+      setUploadError(msg);
+      console.error('Upload error:', err);
     } finally {
       setUploadingImage(false);
     }
@@ -172,7 +177,9 @@ const AdminProducts: React.FC = () => {
       }
       setModalOpen(false);
       fetchData();
-    } catch (err) {
+    } catch (err: any) {
+      const msg = err?.response?.data?.message || err?.message || 'Failed to save product. Please check all required fields.';
+      setSaveError(msg);
       console.error('Error saving product:', err);
     }
   };
@@ -330,12 +337,18 @@ const AdminProducts: React.FC = () => {
               <h3 className="font-heading font-bold text-xl text-white">
                 {editingProduct ? 'Edit Auto Part Item' : 'Create New Auto Part'}
               </h3>
-              <button onClick={() => setModalOpen(false)} className="text-slate-400 hover:text-white">
+              <button onClick={() => { setModalOpen(false); setSaveError(''); setUploadError(''); }} className="text-slate-400 hover:text-white">
                 <X className="w-6 h-6" />
               </button>
             </div>
 
             <form onSubmit={handleSaveProduct} className="p-6 space-y-6 overflow-y-auto flex-1">
+              {/* Save Error Banner */}
+              {saveError && (
+                <div className="bg-rose-500/10 border border-rose-500/40 rounded-xl px-4 py-3 text-xs text-rose-400 font-semibold">
+                  ❌ {saveError}
+                </div>
+              )}
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div className="sm:col-span-2">
                   <label className="block text-xs font-bold uppercase text-slate-300 mb-1">Product Name *</label>
@@ -421,13 +434,32 @@ const AdminProducts: React.FC = () => {
               {/* Image Upload */}
               <div className="space-y-2">
                 <label className="block text-xs font-bold uppercase text-slate-300">Product Images</label>
-                <div className="flex items-center gap-4">
+                <div className="flex items-center gap-4 flex-wrap">
                   <label className="btn-secondary px-4 py-2 text-xs font-bold uppercase cursor-pointer flex items-center gap-2">
                     <Upload className="w-4 h-4 text-brand-red" />
                     <span>{uploadingImage ? 'Uploading...' : 'Upload Image File'}</span>
-                    <input type="file" onChange={handleImageUpload} className="hidden" accept="image/*" />
+                    <input type="file" onChange={handleImageUpload} className="hidden" accept="image/*" disabled={uploadingImage} />
                   </label>
+                  {/* URL fallback input */}
+                  <div className="flex items-center gap-2 flex-1 min-w-[220px]">
+                    <input
+                      type="url"
+                      placeholder="Or paste image URL..."
+                      className="flex-1 bg-slate-900 border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-brand-red"
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter') {
+                          e.preventDefault();
+                          const val = (e.target as HTMLInputElement).value.trim();
+                          if (val) { setImages((prev) => [...prev, val]); (e.target as HTMLInputElement).value = ''; }
+                        }
+                      }}
+                    />
+                    <span className="text-[10px] text-slate-500">Press Enter to add</span>
+                  </div>
                 </div>
+                {uploadError && (
+                  <p className="text-xs text-rose-400 font-semibold">⚠️ {uploadError}</p>
+                )}
                 <div className="flex items-center gap-3 pt-2">
                   {images.map((img, i) => (
                     <div key={i} className="w-16 h-16 rounded-xl bg-slate-950 p-1 border border-white/10 relative">
