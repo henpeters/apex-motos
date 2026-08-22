@@ -19,15 +19,17 @@ export const isCloudinaryConfigured = (): boolean => {
   );
 };
 
+const cleanEnv = (val?: string) => val ? val.replace(/[<>'"]/g, '').trim() : '';
+
 // Configure Cloudinary dynamically if present
 const initCloudinary = () => {
   if (process.env.CLOUDINARY_URL) {
-    cloudinary.config({ cloudinary_url: process.env.CLOUDINARY_URL });
+    cloudinary.config({ cloudinary_url: cleanEnv(process.env.CLOUDINARY_URL) });
   } else if (isCloudinaryConfigured()) {
     cloudinary.config({
-      cloud_name: process.env.CLOUDINARY_CLOUD_NAME?.trim(),
-      api_key: process.env.CLOUDINARY_API_KEY?.trim(),
-      api_secret: process.env.CLOUDINARY_API_SECRET?.trim(),
+      cloud_name: cleanEnv(process.env.CLOUDINARY_CLOUD_NAME),
+      api_key: cleanEnv(process.env.CLOUDINARY_API_KEY),
+      api_secret: cleanEnv(process.env.CLOUDINARY_API_SECRET),
     });
   }
 };
