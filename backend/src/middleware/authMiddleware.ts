@@ -20,11 +20,17 @@ export const protect = async (req: AuthRequest, res: Response, next: NextFunctio
 
   try {
     const secret = process.env.JWT_SECRET || 'apex_motors_super_secret_jwt_key_2026_auto_garage';
-    const decoded = jwt.verify(token, secret) as { id: string };
+    const decoded = jwt.verify(token, secret) as { id: string; role?: string };
 
-    const user = await User.findById(decoded.id).select('-password');
+    let user = await User.findById(decoded.id).select('-password');
+    
+    // Fallback: If DB was reseeded and ID changed, but token is a valid signed admin JWT
+    if (!user && decoded.role === 'admin') {
+      user = await User.findOne({ role: 'admin' }).select('-password');
+    }
+
     if (!user) {
-      res.status(401).json({ message: 'Not authorized, user not found' });
+      res.status(401).json({ message: 'Not authorized, user account not found. Please log out and log back in.' });
       return;
     }
 

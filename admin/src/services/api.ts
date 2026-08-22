@@ -39,6 +39,18 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response && error.response.status === 401) {
+      // Clear expired token if 401 returned
+      localStorage.removeItem('apex_admin_token');
+      localStorage.removeItem('apex_admin_user');
+    }
+    return Promise.reject(error);
+  }
+);
+
 // Admin Auth
 export const loginAdmin = async (credentials: { email: string; password: string }) => {
   const response = await api.post<AdminUser>('/auth/login', credentials);
