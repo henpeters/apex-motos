@@ -22,7 +22,7 @@ export const protect = async (req: AuthRequest, res: Response, next: NextFunctio
     const secret = process.env.JWT_SECRET || 'apex_motors_super_secret_jwt_key_2026_auto_garage';
     const decoded = jwt.verify(token, secret) as { id: string; role?: string };
 
-    let user = await User.findById(decoded.id).select('-password');
+    let user: any = await User.findById(decoded.id).select('-password');
     
     // Fallback: If DB was reseeded and ID changed, but token is a valid signed admin JWT
     if (!user && decoded.role === 'admin') {
