@@ -16,6 +16,7 @@ import HeroSlider from '../components/HeroSlider';
 import FitmentBar from '../components/FitmentBar';
 import ProductCard from '../components/ProductCard';
 import BookingModal from '../components/BookingModal';
+import SEO from '../components/SEO';
 import { getProducts, getCategories, getServices, getTestimonials, getHeroSlides, getMediaUrl } from '../services/api';
 import { Product, Category, Service, Testimonial, HeroSlide } from '../types';
 
@@ -60,6 +61,10 @@ const Home: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-[#0B0E14] text-slate-100">
+      <SEO
+        title="Apex Motors — Premium Auto Parts & Master Garage"
+        description="Discover high-performance auto parts, OEM replacements, ceramic brakes, coilovers, diagnostic tools, and master garage services at Apex Motors."
+      />
       {/* 1. HERO SLIDESHOW SECTION */}
       <HeroSlider slides={heroSlides} />
 

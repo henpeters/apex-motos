@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Phone, Mail, MapPin, Clock, Send, CheckCircle2, Headphones, AlertCircle } from 'lucide-react';
+import SEO from '../components/SEO';
 import { sendContactMessage } from '../services/api';
 
 const ContactPage: React.FC = () => {
@@ -55,6 +56,10 @@ const ContactPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-[#0B0E14] text-slate-100 pt-28 pb-20">
+      <SEO
+        title="Contact Technical Support — Apex Motors"
+        description="Get technical consultation on auto parts fitment, custom vehicle builds, or garage service appointments. Reach out to our master technicians."
+      />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto mb-16 space-y-3">

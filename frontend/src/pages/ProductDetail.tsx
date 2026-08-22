@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { ShoppingBag, Star, ShieldCheck, Truck, Plus, Minus, ArrowLeft, CheckCircle2 } from 'lucide-react';
 import ProductCard from '../components/ProductCard';
+import SEO from '../components/SEO';
 import { getProductById, getMediaUrl } from '../services/api';
 import { Product } from '../types';
 import { useCart } from '../context/CartContext';
@@ -62,6 +63,11 @@ const ProductDetail: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-[#0B0E14] text-slate-100 pt-28 pb-20">
+      <SEO
+        title={`${product.name} — ${product.brand}`}
+        description={product.description}
+        image={getMediaUrl(product.images?.[0])}
+      />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Back Link */}
         <Link to="/store" className="inline-flex items-center gap-2 text-xs font-bold text-slate-400 hover:text-white mb-6">

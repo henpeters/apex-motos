@@ -2,6 +2,7 @@ import { Router } from 'express';
 import {
   getProducts,
   getProductByIdOrSlug,
+  renderProductShareHtml,
   createProduct,
   updateProduct,
   deleteProduct,
@@ -11,6 +12,7 @@ import { protect, adminOnly } from '../middleware/authMiddleware';
 const router = Router();
 
 router.get('/', getProducts);
+router.get('/:id/share', renderProductShareHtml);
 router.get('/:id', getProductByIdOrSlug);
 
 // Admin routes

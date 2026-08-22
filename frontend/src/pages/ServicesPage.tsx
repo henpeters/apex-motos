@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Wrench, Clock, ShieldCheck, CheckCircle2, ArrowRight } from 'lucide-react';
 import BookingModal from '../components/BookingModal';
+import SEO from '../components/SEO';
 import { getServices, getMediaUrl } from '../services/api';
 import { Service } from '../types';
 
@@ -24,6 +25,10 @@ const ServicesPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-[#0B0E14] text-slate-100 pt-28 pb-20">
+      <SEO
+        title="Master Garage Services — Apex Motors"
+        description="Book certified master garage services: 3D laser wheel alignment, ECU remap & dyno tuning, ceramic brake installation, transmission overhaul, and engine rebuilds."
+      />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">

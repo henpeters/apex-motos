@@ -3,6 +3,7 @@ import { useSearchParams } from 'react-router-dom';
 import { Search, Filter, SlidersHorizontal, ShieldCheck, X, RotateCcw } from 'lucide-react';
 import ProductCard from '../components/ProductCard';
 import FitmentBar from '../components/FitmentBar';
+import SEO from '../components/SEO';
 import { getProducts, getCategories } from '../services/api';
 import { Product, Category } from '../types';
 import { useFitment } from '../context/FitmentContext';
@@ -127,6 +128,10 @@ const Store: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-[#0B0E14] text-slate-100 pt-24 pb-20">
+      <SEO
+        title="Auto Parts Store — Apex Motors"
+        description="Browse high-performance brake kits, coilovers, ECU tuners, OEM filters, spark plugs, and performance fluids. Filter by exact vehicle year, make, and model."
+      />
       {/* Fitment Selector Bar */}
       <FitmentBar />
 

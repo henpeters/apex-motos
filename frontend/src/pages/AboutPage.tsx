@@ -1,10 +1,15 @@
 import React from 'react';
 import { ShieldCheck, Award, Wrench, Users, CheckCircle2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import SEO from '../components/SEO';
 
 const AboutPage: React.FC = () => {
   return (
     <div className="min-h-screen bg-[#0B0E14] text-slate-100 pt-28 pb-20">
+      <SEO
+        title="About Apex Motors — Performance Heritage"
+        description="Learn about Apex Motors — founded in 2016, providing track-tested auto parts, OEM components, and ASE master-certified garage workshop services."
+      />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header Hero */}
         <div className="relative rounded-3xl overflow-hidden glass-panel border border-white/10 p-8 sm:p-16 mb-16">
