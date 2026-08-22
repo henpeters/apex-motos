@@ -64,8 +64,8 @@ const CartPage: React.FC = () => {
 
                 return (
                   <div key={item.product._id} className="glass-panel p-4 sm:p-6 rounded-2xl flex items-center gap-6 border border-white/10">
-                    <div className="w-20 h-20 rounded-xl bg-slate-950 p-2 flex items-center justify-center shrink-0">
-                      <img src={image} alt={item.product.name} className="max-h-full max-w-full object-contain" />
+                    <div className="w-20 h-20 rounded-xl overflow-hidden shrink-0 border border-white/10">
+                      <img src={image} alt={item.product.name} className="w-full h-full object-cover" />
                     </div>
 
                     <div className="flex-1 min-w-0">

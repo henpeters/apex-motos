@@ -111,8 +111,8 @@ const CartDrawer: React.FC = () => {
                     key={item.product._id}
                     className="glass-panel p-4 rounded-xl flex items-center gap-4 border border-white/10"
                   >
-                    <div className="w-16 h-16 rounded-lg bg-slate-950 flex items-center justify-center p-2 shrink-0 border border-white/5">
-                      <img src={image} alt={item.product.name} className="max-h-full max-w-full object-contain" />
+                    <div className="w-16 h-16 rounded-xl overflow-hidden shrink-0 border border-white/10">
+                      <img src={image} alt={item.product.name} className="w-full h-full object-cover" />
                     </div>
 
                     <div className="flex-1 min-w-0">

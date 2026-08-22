@@ -105,11 +105,11 @@ const Home: React.FC = () => {
                 to={`/store?category=${cat.slug}`}
                 className="glass-panel glass-panel-hover p-4 rounded-2xl flex flex-col items-center text-center group border border-white/10 relative overflow-hidden block"
               >
-                <div className="w-full h-32 rounded-xl bg-slate-950/80 overflow-hidden mb-3 p-2 flex items-center justify-center">
+                <div className="w-full h-36 rounded-xl overflow-hidden mb-3 border border-white/10">
                   <img
                     src={getMediaUrl(cat.image || '/media/schwarzenarzisse-auto-parts-white-365353_1920.jpg')}
                     alt={cat.name}
-                    className="max-h-full max-w-full object-contain group-hover:scale-110 transition-transform duration-500"
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                   />
                 </div>
                 <h3 className="font-heading font-bold text-white text-sm group-hover:text-brand-red transition-colors">

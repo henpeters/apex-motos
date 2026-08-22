@@ -87,11 +87,11 @@ const SearchModal: React.FC<SearchModalProps> = ({ onClose }) => {
               onClick={() => handleSelectProduct(product.slug || product._id)}
               className="glass-panel p-3 rounded-xl flex items-center gap-4 border border-white/10 hover:border-brand-red/40 cursor-pointer transition-all group"
             >
-              <div className="w-14 h-14 rounded-lg bg-slate-950 flex items-center justify-center p-2 shrink-0">
+              <div className="w-14 h-14 rounded-lg overflow-hidden shrink-0 border border-white/10">
                 <img
                   src={getMediaUrl(product.images?.[0] || '/media/schwarzenarzisse-auto-parts-white-365353_1920.jpg')}
                   alt={product.name}
-                  className="max-h-full max-w-full object-contain group-hover:scale-105 transition-transform"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform"
                 />
               </div>
 

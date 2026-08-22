@@ -11,7 +11,7 @@ import {
   Layers,
   ShieldCheck,
 } from 'lucide-react';
-import { getProducts, getCategories, createProduct, updateProduct, deleteProduct, uploadImage } from '../services/api';
+import { getProducts, getCategories, createProduct, updateProduct, deleteProduct, uploadImage, getMediaUrl } from '../services/api';
 import { Product, Category, Specification, VehicleCompatibility } from '../types';
 
 const AdminProducts: React.FC = () => {
@@ -275,9 +275,9 @@ const AdminProducts: React.FC = () => {
                     <td className="py-3 px-4">
                       <div className="flex items-center gap-3">
                         <img
-                          src={prod.images?.[0] || '/media/schwarzenarzisse-auto-parts-white-365353_1920.jpg'}
+                          src={getMediaUrl(prod.images?.[0] || '/media/schwarzenarzisse-auto-parts-white-365353_1920.jpg')}
                           alt={prod.name}
-                          className="w-10 h-10 rounded-lg object-contain bg-slate-950 p-1"
+                          className="w-10 h-10 rounded-lg object-cover border border-white/10"
                         />
                         <span className="font-bold text-white max-w-xs truncate block">{prod.name}</span>
                       </div>
@@ -462,12 +462,12 @@ const AdminProducts: React.FC = () => {
                 )}
                 <div className="flex items-center gap-3 pt-2">
                   {images.map((img, i) => (
-                    <div key={i} className="w-16 h-16 rounded-xl bg-slate-950 p-1 border border-white/10 relative">
-                      <img src={img} alt="Uploaded" className="w-full h-full object-contain" />
+                    <div key={i} className="w-16 h-16 rounded-xl overflow-hidden border border-white/10 relative">
+                      <img src={getMediaUrl(img)} alt="Uploaded" className="w-full h-full object-cover" />
                       <button
                         type="button"
                         onClick={() => setImages(images.filter((_, idx) => idx !== i))}
-                        className="absolute -top-1 -right-1 bg-rose-600 text-white rounded-full w-4 h-4 text-[10px] flex items-center justify-center"
+                        className="absolute top-1 right-1 bg-rose-600/90 text-white rounded-full w-5 h-5 text-[11px] flex items-center justify-center font-bold shadow-md hover:bg-rose-600 transition-colors"
                       >
                         ×
                       </button>

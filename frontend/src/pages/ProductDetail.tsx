@@ -79,14 +79,14 @@ const ProductDetail: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
           {/* LEFT: GALLERY PREVIEW */}
           <div className="space-y-4">
-            <div className="w-full h-[420px] rounded-3xl bg-slate-950/80 border border-white/10 p-6 flex items-center justify-center relative overflow-hidden shadow-2xl">
+            <div className="w-full h-[450px] rounded-3xl bg-slate-900 border border-white/10 flex items-center justify-center relative overflow-hidden shadow-2xl">
               <img
                 src={getMediaUrl(activeImage || '/media/schwarzenarzisse-auto-parts-white-365353_1920.jpg')}
                 alt={product.name}
-                className="max-h-full max-w-full object-contain"
+                className="w-full h-full object-cover"
               />
               {hasDiscount && (
-                <span className="absolute top-4 left-4 bg-brand-red text-white text-xs font-black uppercase tracking-wider px-3 py-1 rounded-md shadow-redGlow">
+                <span className="absolute top-4 left-4 bg-brand-red text-white text-xs font-black uppercase tracking-wider px-3 py-1 rounded-md shadow-redGlow z-10">
                   SALE
                 </span>
               )}
@@ -99,11 +99,11 @@ const ProductDetail: React.FC = () => {
                   <button
                     key={idx}
                     onClick={() => setActiveImage(img)}
-                    className={`w-20 h-20 rounded-xl bg-slate-950 p-2 border transition-all shrink-0 ${
+                    className={`w-20 h-20 rounded-xl overflow-hidden border transition-all shrink-0 ${
                       activeImage === img ? 'border-brand-red ring-2 ring-brand-red/30' : 'border-white/10 opacity-60 hover:opacity-100'
                     }`}
                   >
-                    <img src={getMediaUrl(img)} alt={`Thumbnail ${idx}`} className="w-full h-full object-contain" />
+                    <img src={getMediaUrl(img)} alt={`Thumbnail ${idx}`} className="w-full h-full object-cover" />
                   </button>
                 ))}
               </div>
