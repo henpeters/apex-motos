@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { ShoppingBag, Star, ShieldCheck, Truck, Plus, Minus, ArrowLeft, CheckCircle2 } from 'lucide-react';
+import { ShoppingBag, Star, ShieldCheck, Truck, Plus, Minus, ArrowLeft, CheckCircle2, Maximize2, X } from 'lucide-react';
 import ProductCard from '../components/ProductCard';
 import SEO from '../components/SEO';
 import { getProductById, getMediaUrl } from '../services/api';
@@ -15,6 +15,7 @@ const ProductDetail: React.FC = () => {
   const [quantity, setQuantity] = useState(1);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<'specs' | 'compatibility' | 'description'>('specs');
+  const [zoomOpen, setZoomOpen] = useState(false);
 
   const { addToCart } = useCart();
   const navigate = useNavigate();
@@ -79,17 +80,27 @@ const ProductDetail: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
           {/* LEFT: GALLERY PREVIEW */}
           <div className="space-y-4">
-            <div className="w-full h-[450px] rounded-3xl bg-slate-900 border border-white/10 flex items-center justify-center relative overflow-hidden shadow-2xl">
+            <div
+              onClick={() => setZoomOpen(true)}
+              className="w-full h-[450px] rounded-3xl bg-[#0D111A] border border-white/10 p-4 flex items-center justify-center relative overflow-hidden shadow-2xl cursor-zoom-in group"
+            >
               <img
                 src={getMediaUrl(activeImage || '/media/schwarzenarzisse-auto-parts-white-365353_1920.jpg')}
                 alt={product.name}
-                className="w-full h-full object-cover"
+                className="max-h-full max-w-full object-contain drop-shadow-xl group-hover:scale-105 transition-transform duration-300"
               />
               {hasDiscount && (
                 <span className="absolute top-4 left-4 bg-brand-red text-white text-xs font-black uppercase tracking-wider px-3 py-1 rounded-md shadow-redGlow z-10">
                   SALE
                 </span>
               )}
+              <button
+                type="button"
+                className="absolute bottom-4 right-4 bg-slate-900/80 backdrop-blur-md border border-white/10 p-2.5 rounded-xl text-slate-300 group-hover:text-white group-hover:bg-brand-red transition-all shadow-lg"
+                title="Click to Zoom Fullscreen"
+              >
+                <Maximize2 className="w-5 h-5" />
+              </button>
             </div>
 
             {/* Thumbnail Carousel */}
@@ -99,11 +110,11 @@ const ProductDetail: React.FC = () => {
                   <button
                     key={idx}
                     onClick={() => setActiveImage(img)}
-                    className={`w-20 h-20 rounded-xl overflow-hidden border transition-all shrink-0 ${
+                    className={`w-20 h-20 rounded-xl bg-[#0D111A] p-1.5 border transition-all shrink-0 ${
                       activeImage === img ? 'border-brand-red ring-2 ring-brand-red/30' : 'border-white/10 opacity-60 hover:opacity-100'
                     }`}
                   >
-                    <img src={getMediaUrl(img)} alt={`Thumbnail ${idx}`} className="w-full h-full object-cover" />
+                    <img src={getMediaUrl(img)} alt={`Thumbnail ${idx}`} className="w-full h-full object-contain" />
                   </button>
                 ))}
               </div>
@@ -313,6 +324,26 @@ const ProductDetail: React.FC = () => {
           </div>
         )}
       </div>
+
+      {/* FULLSCREEN IMAGE ZOOM LIGHTBOX */}
+      {zoomOpen && (
+        <div
+          onClick={() => setZoomOpen(false)}
+          className="fixed inset-0 z-50 bg-black/95 backdrop-blur-md p-4 sm:p-10 flex items-center justify-center cursor-zoom-out"
+        >
+          <button
+            onClick={() => setZoomOpen(false)}
+            className="absolute top-6 right-6 text-white/80 hover:text-white bg-white/10 p-3 rounded-full hover:bg-brand-red transition-all z-50 shadow-2xl"
+          >
+            <X className="w-8 h-8" />
+          </button>
+          <img
+            src={getMediaUrl(activeImage || '/media/schwarzenarzisse-auto-parts-white-365353_1920.jpg')}
+            alt={product.name}
+            className="max-h-[90vh] max-w-[90vw] object-contain drop-shadow-2xl rounded-2xl"
+          />
+        </div>
+      )}
     </div>
   );
 };

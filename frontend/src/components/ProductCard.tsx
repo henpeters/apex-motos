@@ -38,11 +38,11 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
       </span>
 
       {/* Image Gallery Container */}
-      <div className="relative w-full h-56 bg-slate-900/40 overflow-hidden flex items-center justify-center">
+      <div className="relative w-full h-56 bg-[#0D111A] overflow-hidden flex items-center justify-center p-3">
         <img
           src={mainImage}
           alt={product.name}
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+          className="max-h-full max-w-full object-contain group-hover:scale-105 transition-transform duration-500 drop-shadow-md"
           loading="lazy"
         />
 
